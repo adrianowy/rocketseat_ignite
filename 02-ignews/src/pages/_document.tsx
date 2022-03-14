@@ -7,7 +7,6 @@ export default class MyDocument extends Document {
         return (
             <Html>
             <Head>
-                <title>ig.news</title>
                 <link rel="shortcut icon" href="/favicon.png" type="image/png" />
             </Head>
             <body>

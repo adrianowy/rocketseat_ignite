@@ -8,6 +8,9 @@ type User ={
     ref: {
         id: string;
     }
+    data: {
+        stripe_customer_id: string;
+    }
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -26,27 +29,35 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             )
         )
 
-        // insere esse email na tabela de clientes do stripe
-        const stripeCustomer = await stripe.customers.create({
-            email: session.user.email,
-            // metada
-        })
+        let customerId = user.data.stripe_customer_id;
 
-        // insere o id do cliente que vem do stripe, no banco faundaDB
-        // faz mapeamento do mesmo cliente entre as duas plataformas, stripe e faunadb
-        await fauna.query(
-            q.Update(
-                q.Ref(q.Collection('users'), user.ref.id),
-                {
-                    data: {
-                        stripe_customer_id: stripeCustomer.id
+        // if o usuario existe no fauna mas ainda não tem o id que vem do stripe
+        // então ele vai criar inserir no stripe esse cliente
+        if(!customerId){
+            // insere esse email na tabela de clientes do stripe
+            const stripeCustomer = await stripe.customers.create({
+                email: session.user.email,
+                // metada
+            })
+
+            // insere o id do cliente que vem do stripe, no banco faundaDB
+            // faz mapeamento do mesmo cliente entre as duas plataformas, stripe e faunadb
+            await fauna.query(
+                q.Update(
+                    q.Ref(q.Collection('users'), user.ref.id),
+                    {
+                        data: {
+                            stripe_customer_id: stripeCustomer.id
+                        }
                     }
-                }
+                )
             )
-        )
+
+            customerId = stripeCustomer.id;
+        }        
 
         const stripeCheckoutSession = await stripe.checkout.sessions.create({
-            customer: stripeCustomer.id,
+            customer: customerId,
             payment_method_types: ['card'],
             billing_address_collection: 'required',
             line_items: [

@@ -17,7 +17,7 @@ export function SubscribeButton({priceId}: SubscribeButtonProps){
             return;
         }
 
-        //criacao da checkout session
+        // checkout session
         try {
 
           const response = await api.post('subscribe')
@@ -29,7 +29,9 @@ export function SubscribeButton({priceId}: SubscribeButtonProps){
           await stripe.redirectToCheckout({sessionId})
 
         }catch(err){
+            
             alert(err.message)
+
         }
     }
     
