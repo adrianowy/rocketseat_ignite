@@ -7,12 +7,12 @@
 :root {
     --white: #FFFFFF;
     
-    --gray-100: #F8F8F8;
-    --gray-300: #D7D7D7;
-    --gray-400: #BBBBBB;
-    --gray-850: #1A1D23;
+    --gray-100: #F8F8F8; //heading
+    --gray-300: #D7D7D7; //body
+    --gray-400: #BBBBBB; //info
+    --gray-850: #1A1D23; //background
 
-    --pink-500: #FF57B2;
+    --pink-500: #FF57B2; //highlight
 }
 
 @media (max-width: 1080px){
@@ -33,7 +33,7 @@ body{
 }
 
 body, input, textarea, select, button{
-    font: 400 1rem "Poppins", sans-serif;
+    font: 400 1rem "Inter", sans-serif;
 }
 
 button {
