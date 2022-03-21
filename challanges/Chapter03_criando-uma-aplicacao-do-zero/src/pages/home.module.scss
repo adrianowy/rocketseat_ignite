@@ -1,8 +1,5 @@
 
 .posts{
-    max-width: 700px;
-    margin: 2rem auto 0;
-
     a{
         display: block;
 
@@ -14,44 +11,69 @@
 
         strong{
             display: block;
-            font-size: 1.5rem;
+
             margin-top: 1rem;
             line-height: 2rem;
-            transition: 0.3s;
+            
+            font-size: 1.725rem;
             font-weight: 700;
+
             color: var(--gray-100);
+            transition: 0.3s;
         }
 
         p{
-            margin-top: 0.5rem;
-            line-height: 1.625rem;
+            margin-top: 1rem;
+            line-height: 1.5rem;
+
+            font-size: 1.125rem;
+
+            color: var(--gray-300);
             transition: 0.3s;
-            color: var(--gray-400);
         }
 
         .details{
             display: flex;
             flex-direction: row;
+            margin-top: 1rem;
+            color: var(--gray-400);
+            column-gap: 1.5rem;
+            padding: 0.125rem;
 
-            time{
-                font-size: 1rem;
+            time, span{
                 display: flex;
+                justify-content: centerr;
                 align-items: center;
-                color: var(--gray-300);
-            }
+                column-gap: 0.5rem;
 
-            span{
+                font-size: 1rem;
                 
+                & svg{
+                    width: 20px;
+                    height: 20px;
+                }
             }
+            
         }
 
         &:hover{
             strong{
-                color: var(--yellow-500);
+                color: var(--pink-500);
             }
             p{
-                color: var(--gray-100);
+                color: var(--white);
             }
         }
     }
+}
+
+.btnCarregarPosts{
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.5rem;
+
+    margin-top: 4rem;
+
+    color: var(--pink-500);
 }
