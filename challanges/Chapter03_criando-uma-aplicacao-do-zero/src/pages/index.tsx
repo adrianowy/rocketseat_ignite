@@ -45,38 +45,49 @@ export default function Home({postsPagination}: HomeProps) {
         response.json()
       );
 
-      // postsResponse.results.map(post => {
-      //   return {
-      //     uid: post.uid,
-      //     first_publication_date: format(
-      //       new Date(post.last_publication_date),
-      //       "dd MMM yyyy",
-      //       {
-      //         locale: ptBR,
-      //       }
-      //     ),
-      //     data: {
-      //       title: post.data.title,
-      //       subtitle: post.data.subtitle,
-      //       author: post.data.author
-      //     },
-      //   }
-      // });
+      const posts = postsResults.results.map(post => {
+        return {
+          uid: post.uid,
+          first_publication_date: format(
+            new Date(post.last_publication_date),
+            "dd MMM yyyy",
+            {
+              locale: ptBR,
+            }
+          ),
+          data: {
+            title: post.data.title,
+            subtitle: post.data.subtitle,
+            author: post.data.author
+          },
+        }
+      });
+
+      setPostsPrismic({
+        ...postsPrismic,
+        next_page: postsResults.next_page,
+        results: [
+          ...postsPrismic.results,
+          ...posts
+        ]
+      });
   
-      console.log(postsResults);
+      // console.log(postsResults);
+      // console.log(posts);
+      // console.log(postsPrismic.results);
+      // console.log(postsResults);
       
     } catch (error) {
       console.log('Error: ',error);
-        
     }
     
   }
 
-  useEffect(()=>{
-    console.log('effect postPagination');
-    console.log(postsPrismic.next_page);
+  // useEffect(()=>{
+  //   console.log('effect postPagination');
+  //   console.log(postsPrismic.next_page);
     
-  }, [postsPrismic]);
+  // }, [postsPrismic]);
 
   return (
     <>
@@ -126,7 +137,7 @@ export const getStaticProps: GetStaticProps = async () => {
     Prismic.predicates.at('document.type', 'posts')
   ], {
     fetch: ['publication.title'],
-    pageSize: 2
+    pageSize: 1
   });
 
   const results = postsResponse.results.map(post => {
