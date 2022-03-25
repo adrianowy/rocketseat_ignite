@@ -38,7 +38,7 @@ export default function Home({postsPagination}: HomeProps) {
   const [postsPrismic, setPostsPrismic] = useState<PostPagination>(postsPagination);
 
   async function handleNextPage(){
-    console.log(postsPrismic.next_page);
+    // console.log(postsPrismic.next_page);
 
     try {
       const postsResults = await fetch(`${postsPrismic.next_page}`).then(response =>
