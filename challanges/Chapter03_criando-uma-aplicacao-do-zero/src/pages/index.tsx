@@ -12,7 +12,7 @@ import { getPrismicClient } from '../services/prismic';
 
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 interface Post {
   uid?: string;
@@ -48,13 +48,7 @@ export default function Home({postsPagination}: HomeProps) {
       const posts = postsResults.results.map(post => {
         return {
           uid: post.uid,
-          first_publication_date: format(
-            new Date(post.last_publication_date),
-            "dd MMM yyyy",
-            {
-              locale: ptBR,
-            }
-          ),
+          first_publication_date: post.first_publication_date,
           data: {
             title: post.data.title,
             subtitle: post.data.subtitle,
@@ -71,23 +65,12 @@ export default function Home({postsPagination}: HomeProps) {
           ...posts
         ]
       });
-  
-      // console.log(postsResults);
-      // console.log(posts);
-      // console.log(postsPrismic.results);
-      // console.log(postsResults);
       
     } catch (error) {
       console.log('Error: ',error);
     }
     
   }
-
-  // useEffect(()=>{
-  //   console.log('effect postPagination');
-  //   console.log(postsPrismic.next_page);
-    
-  // }, [postsPrismic]);
 
   return (
     <>
@@ -104,7 +87,16 @@ export default function Home({postsPagination}: HomeProps) {
                   <strong>{post.data.title}</strong>
                   <p>{post.data.subtitle}</p>
                   <div className={styles.details}>
-                    <time><FiCalendar/>{post.first_publication_date}</time>
+                    <time>
+                      <FiCalendar/>
+                      {format(
+                        new Date(post.first_publication_date),
+                        "dd MMM yyyy",
+                        {
+                          locale: ptBR,
+                        }
+                      )}
+                    </time>
                     <span><FiUser/>{post.data.author}</span>
                   </div>
                 </a>
@@ -143,13 +135,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const results = postsResponse.results.map(post => {
     return {
       uid: post.uid,
-      first_publication_date: format(
-        new Date(post.last_publication_date),
-        "dd MMM yyyy",
-        {
-          locale: ptBR,
-        }
-      ),
+      first_publication_date: post.first_publication_date,
       data: {
         title: post.data.title,
         subtitle: post.data.subtitle,
@@ -164,6 +150,7 @@ export const getStaticProps: GetStaticProps = async () => {
         next_page: postsResponse.next_page,
         results
       }
-    }
+    },
+    revalidate: 1800,
   }
 };
