@@ -16,7 +16,10 @@ export function SidebarDrawerProvider({children}: SidebarDrawerProviderProps){
     const router = useRouter()
 
     useEffect(() => {
-        disclosure.onClose()
+        disclosure.onClose();
+        
+        //router.asPath
+        // sempre que houver uma troca de rota, o menu lateral vai fechar
     }, [router.asPath])
 
     return (

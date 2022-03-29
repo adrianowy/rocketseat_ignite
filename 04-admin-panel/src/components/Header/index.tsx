@@ -1,4 +1,5 @@
 import { Flex, Icon, IconButton, useBreakpointValue } from '@chakra-ui/react'
+import Link from 'next/link'
 import { RiMenuLine } from 'react-icons/ri'
 import { useSidebarDrawer } from '../../contexts/SiddebarDrawerContext'
 import { Logo } from './Logo'
@@ -24,7 +25,7 @@ export function Header(){
           mx="auto"
           mt="4"
           px="6"
-          alignContent={'center'}
+          alignItems={'center'}
         >
 
             {!isWideVersion && (
@@ -38,9 +39,9 @@ export function Header(){
                     py="2"
                 />
             )}
-
+            
             <Logo />
-
+            
             {isWideVersion && <SearchBox />}
 
             <Flex alignItems="center" ml="auto">
