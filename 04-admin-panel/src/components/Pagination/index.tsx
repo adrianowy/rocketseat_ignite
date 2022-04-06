@@ -1,7 +1,40 @@
 import { Box, Stack } from "@chakra-ui/react";
 import { PaginationItem } from "./PaginationItem";
 
-export function Pagination() {
+interface PaginationProps{
+    totalCountOfRegisters: number;
+    registerPerPage?: number;
+    currentPage?: number;
+    onPageChange: (page: number) => void;
+}
+
+const siblingsCount = 1;
+
+function generatePageArray(from: number, to: number){
+    return [...new Array(to - from)]
+        .map((_, index) => {
+            return from + index + 1;
+        })
+        .filter(page => page > 0);
+}
+
+export function Pagination({
+    totalCountOfRegisters,
+    registerPerPage = 10,
+    currentPage = 1,
+    onPageChange
+}: PaginationProps) {
+
+    const lastPage = Math.floor(totalCountOfRegisters / registerPerPage);
+
+    const previousPage = currentPage > 1
+        ? generatePageArray(currentPage - 1 - siblingsCount, currentPage - 1)
+        : [];
+
+    const nextPage = currentPage < lastPage
+        ? generatePageArray(currentPage, Math.min(currentPage + siblingsCount, lastPage))
+        : [];
+
     return (
         <Stack
             direction={["column", "row"]}
@@ -18,12 +51,21 @@ export function Pagination() {
                 direction="row"
                 spacing="2"
             >
-                <PaginationItem number={1} isCurrent />
-                <PaginationItem number={2} />
-                <PaginationItem number={3} />
-                <PaginationItem number={4} />
-                <PaginationItem number={5} />
-                <PaginationItem number={6} />
+
+                { previousPage.length > 0 && previousPage.map(page => {
+                    return (
+                        <PaginationItem key={page} number={page} />
+                    )
+                })}
+
+                <PaginationItem number={currentPage} isCurrent />
+
+                { nextPage.length > 0 && nextPage.map(page => {
+                    return (
+                        <PaginationItem key={page} number={page} />
+                    )
+                })}
+                
             </Stack>
         </Stack>
     )
